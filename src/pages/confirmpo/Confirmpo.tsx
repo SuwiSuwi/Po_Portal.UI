@@ -5,8 +5,6 @@ import {
   BiCheckCircle,
   BiEdit,
   BiDetail,
-  BiChevronLeft,
-  BiChevronRight,
   BiSearch,
   BiDownload,
 } from "react-icons/bi";
@@ -14,6 +12,7 @@ import { Button, AutoComplete, DatePicker } from "ponyo-ui";
 import ConfirmpoEdit from "./ConfirmpoEdit";
 import ConfirmpoDetail from "./ConfirmpoDetail";
 import { exportToExcel } from "../../components/ui/ExportExcel";
+import PoTable, { type PoTableColumn } from "../../components/ui/PoTable";
 
 interface ConfirmPoData {
   id: string;
@@ -204,6 +203,72 @@ const Confirmpo: React.FC = () => {
     setCurrentPage(1);
   };
 
+  // Define Columns
+  const columns: PoTableColumn[] = [
+    { header: "Customer", accessorKey: "customer" },
+    { header: "Ship To Plant", accessorKey: "shipToPlant" },
+    {
+      header: "PO Number",
+      accessorKey: "poNumber",
+      className: "text-primary font-medium",
+    },
+    { header: "Revision", accessorKey: "revision" },
+    { header: "PO Order Date", accessorKey: "poOrderDate" },
+    { header: "PO Line", accessorKey: "poLine" },
+    { header: "Part Description", accessorKey: "partDescription" },
+    { header: "Drawing", accessorKey: "drawing" },
+    { header: "PO Qty", accessorKey: "poQty" },
+    { header: "PO Require Date", accessorKey: "poRequireDate" },
+    {
+      header: "APAT CONFIRM",
+      className: "text-center border-b",
+      columns: [
+        {
+          header: "Ship Date",
+          accessorKey: "apatShipDate",
+          className: "text-gray-600 font-medium",
+        },
+        {
+          header: "Qty",
+          accessorKey: "apatQty",
+          className: "text-gray-600 font-medium",
+        },
+        {
+          header: "Owner",
+          accessorKey: "apatOwner",
+          className: "text-gray-600 font-medium",
+        },
+        {
+          header: "Remark",
+          accessorKey: "apatRemark",
+          className: "text-gray-600 font-medium",
+        },
+      ],
+    },
+    {
+      header: "Actions",
+      className: "text-center",
+      render: (row) => (
+        <div className="flex justify-center space-x-2">
+          <button
+            onClick={() => handleEdit(row)}
+            className="p-1.5 text-primary hover:bg-primary/10 rounded-full transition-colors"
+            title="Edit"
+          >
+            <BiEdit size={18} />
+          </button>
+          <button
+            onClick={() => handleDetail(row)}
+            className="p-1.5 text-primary hover:bg-primary/10 rounded-full transition-colors"
+            title="Detail"
+          >
+            <BiDetail size={18} />
+          </button>
+        </div>
+      ),
+    },
+  ];
+
   return (
     <div className="px-6 py-2">
       <div className="bg-white px-4 py-2 rounded-xl shadow-sm border border-gray-200 mb-4">
@@ -290,221 +355,18 @@ const Confirmpo: React.FC = () => {
         </div>
       </div>
 
-      <div className="bg-white rounded-lg shadow border border-gray-200 flex flex-col h-[calc(100vh-250px)]">
-        <div className="overflow-auto flex-1">
-          <table className="min-w-full border-collapse">
-            <thead>
-              <tr className="bg-[#008DD1] text-white text-xs uppercase tracking-wider">
-                <th
-                  rowSpan={2}
-                  className="px-2 py-3 border-r border-white/20 font-semibold text-center align-middle whitespace-nowrap min-w-[100px]"
-                >
-                  Customer
-                </th>
-                <th
-                  rowSpan={2}
-                  className="px-2 py-3 border-r border-white/20 font-semibold text-center align-middle whitespace-nowrap min-w-[120px]"
-                >
-                  Ship To Plant
-                </th>
-                <th
-                  rowSpan={2}
-                  className="px-2 py-3 border-r border-white/20 font-semibold text-center align-middle whitespace-nowrap min-w-[120px]"
-                >
-                  PO Number
-                </th>
-                <th
-                  rowSpan={2}
-                  className="px-2 py-3 border-r border-white/20 font-semibold text-center align-middle whitespace-nowrap min-w-[80px]"
-                >
-                  Revision
-                </th>
-                <th
-                  rowSpan={2}
-                  className="px-2 py-3 border-r border-white/20 font-semibold text-center align-middle whitespace-nowrap min-w-[120px]"
-                >
-                  PO Order Date
-                </th>
-                <th
-                  rowSpan={2}
-                  className="px-2 py-3 border-r border-white/20 font-semibold text-center align-middle whitespace-nowrap min-w-[80px]"
-                >
-                  PO Line
-                </th>
-                <th
-                  rowSpan={2}
-                  className="px-2 py-3 border-r border-white/20 font-semibold text-center align-middle whitespace-nowrap min-w-[200px]"
-                >
-                  Part Description
-                </th>
-                <th
-                  rowSpan={2}
-                  className="px-2 py-3 border-r border-white/20 font-semibold text-center align-middle whitespace-nowrap min-w-[120px]"
-                >
-                  Drawing
-                </th>
-                <th
-                  rowSpan={2}
-                  className="px-2 py-3 border-r border-white/20 font-semibold text-center align-middle whitespace-nowrap min-w-[80px]"
-                >
-                  PO Qty
-                </th>
-                <th
-                  rowSpan={2}
-                  className="px-2 py-3 border-r border-white/20 font-semibold text-center align-middle whitespace-nowrap min-w-[120px]"
-                >
-                  PO Require Date
-                </th>
-                <th
-                  colSpan={4}
-                  className="px-2 py-2 border-r border-white/20 font-semibold text-center border-b"
-                >
-                  APAT CONFIRM
-                </th>
-                <th
-                  rowSpan={2}
-                  className="px-2 py-3 font-semibold text-center align-middle whitespace-nowrap min-w-[80px]"
-                >
-                  Actions
-                </th>
-              </tr>
-              <tr className="bg-[#008DD1] text-white text-xs uppercase tracking-wider">
-                <th className="px-2 py-2 border-r border-white/20 font-semibold text-center whitespace-nowrap min-w-[100px]">
-                  Ship Date
-                </th>
-                <th className="px-2 py-2 border-r border-white/20 font-semibold text-center whitespace-nowrap min-w-[80px]">
-                  Qty
-                </th>
-                <th className="px-2 py-2 border-r border-white/20 font-semibold text-center whitespace-nowrap min-w-[100px]">
-                  Owner
-                </th>
-                <th className="px-2 py-2 border-r border-white/20 font-semibold text-center whitespace-nowrap min-w-[150px]">
-                  Remark
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {currentRows.length > 0 ? (
-                currentRows.map((row, index) => (
-                  <tr
-                    key={row.id}
-                    className={`hover:bg-gray-50 text-sm text-gray-700 ${
-                      index % 2 === 0 ? "bg-white" : "bg-gray-50"
-                    }`}
-                  >
-                    <td className="px-3 py-3 whitespace-nowrap text-center">
-                      {row.customer}
-                    </td>
-                    <td className="px-3 py-3 whitespace-nowrap text-center">
-                      {row.shipToPlant}
-                    </td>
-                    <td className="px-3 py-3 whitespace-nowrap text-center font-medium text-primary">
-                      {row.poNumber}
-                    </td>
-                    <td className="px-3 py-3 whitespace-nowrap text-center">
-                      {row.revision}
-                    </td>
-                    <td className="px-3 py-3 whitespace-nowrap text-center">
-                      {row.poOrderDate}
-                    </td>
-                    <td className="px-3 py-3 whitespace-nowrap text-center">
-                      {row.poLine}
-                    </td>
-                    <td className="px-3 py-3 whitespace-nowrap">
-                      {row.partDescription}
-                    </td>
-                    <td className="px-3 py-3 whitespace-nowrap text-center">
-                      {row.drawing}
-                    </td>
-                    <td className="px-3 py-3 whitespace-nowrap text-center">
-                      {row.poQty}
-                    </td>
-                    <td className="px-3 py-3 whitespace-nowrap text-center">
-                      {row.poRequireDate}
-                    </td>
-                    {/* APAT Confirm Columns */}
-                    <td className="px-3 py-3 whitespace-nowrap text-center bg-blue-50/50">
-                      {row.apatShipDate}
-                    </td>
-                    <td className="px-3 py-3 whitespace-nowrap text-center bg-blue-50/50">
-                      {row.apatQty}
-                    </td>
-                    <td className="px-3 py-3 whitespace-nowrap text-center bg-blue-50/50">
-                      {row.apatOwner}
-                    </td>
-                    <td className="px-3 py-3 whitespace-nowrap text-center bg-blue-50/50">
-                      {row.apatRemark}
-                    </td>
-                    <td className="px-3 py-3 whitespace-nowrap text-center">
-                      <button
-                        className="p-1.5 text-primary hover:bg-primary/10 rounded-full transition-colors"
-                        title="Edit"
-                        onClick={() => handleEdit(row)}
-                      >
-                        <BiEdit size={18} />
-                      </button>
-                      <button
-                        className="p-1.5 text-primary hover:bg-primary/10 rounded-full transition-colors"
-                        title="Detail"
-                        onClick={() => handleDetail(row)}
-                      >
-                        <BiDetail size={18} />
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td
-                    colSpan={15}
-                    className="px-6 py-4 text-center text-gray-500"
-                  >
-                    No data found
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Pagination Controls */}
-        <div className="border-t border-gray-200 bg-white px-4 py-3 flex items-center justify-end gap-4 sm:px-6">
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-700">Rows per page:</span>
-            <select
-              value={rowsPerPage}
-              onChange={handleChangeRowsPerPage}
-              className="border border-gray-300 rounded text-sm p-1 focus:outline-none focus:border-primary"
-            >
-              <option value={10}>10</option>
-              <option value={20}>20</option>
-              <option value={50}>50</option>
-              <option value={100}>100</option>
-            </select>
-          </div>
-
-          <div className="text-sm text-gray-700">
-            Page <span className="font-medium">{currentPage}</span> of{" "}
-            <span className="font-medium">{totalPages}</span>
-          </div>
-
-          <div className="flex items-center gap-1">
-            <button
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-              className="p-1 rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <BiChevronLeft size={24} />
-            </button>
-            <button
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages || totalPages === 0}
-              className="p-1 rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <BiChevronRight size={24} />
-            </button>
-          </div>
-        </div>
+      <div className="h-[calc(100vh-250px)] flex flex-col">
+        <PoTable
+          data={currentRows}
+          columns={columns}
+          pagination={{
+            currentPage,
+            totalPages,
+            rowsPerPage,
+            onPageChange: handlePageChange,
+            onRowsPerPageChange: handleChangeRowsPerPage,
+          }}
+        />
       </div>
 
       <ConfirmpoEdit

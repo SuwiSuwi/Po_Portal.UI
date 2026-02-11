@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { usePageHeader } from "../../app/context/PageHeaderContext";
-import { BiHome, BiBell, BiSearch } from "react-icons/bi";
+import { BiHome, BiBell, BiSearch, BiMailSend } from "react-icons/bi";
 import { Button, DataTable, AutoComplete, DatePicker } from "ponyo-ui";
 
 interface NotificationData {
@@ -32,6 +32,7 @@ const Notification: React.FC = () => {
   const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
   const [selectedStatus, setSelectedStatus] = useState<any>(null);
   const [data, setData] = useState<NotificationData[]>([]);
+  const [selectedRows, setSelectedRows] = useState<NotificationData[]>([]);
 
   useEffect(() => {
     setPageHeader("Notification", [
@@ -305,6 +306,15 @@ const Notification: React.FC = () => {
               >
                 Search
               </Button>
+              {selectedRows.length > 0 && (
+                <Button
+                  variant="secondary"
+                  className="flex-1 justify-center"
+                  leftIcon={<BiMailSend size={18} />}
+                >
+                  Send Email
+                </Button>
+              )}
             </div>
           </div>
         </div>
@@ -316,6 +326,7 @@ const Notification: React.FC = () => {
         columns={columns}
         initialEnableActions={false}
         initialEnableRowSelection={true}
+        onRowSelect={setSelectedRows}
         exportFileName="Notification"
       />
     </div>

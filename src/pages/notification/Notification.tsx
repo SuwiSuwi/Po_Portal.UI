@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { usePageHeader } from "../../app/context/PageHeaderContext";
-import { BiHome, BiBell, BiSearch, BiMailSend } from "react-icons/bi";
-import { Button, DataTable, AutoComplete, DatePicker } from "ponyo-ui";
+import { BiHome, BiBell } from "react-icons/bi";
+import { DataTable } from "ponyo-ui";
+import NotificationSearch from "./NotificationSearch";
 
 interface NotificationData {
   id: string;
@@ -14,16 +15,6 @@ interface NotificationData {
   notifiedDate: string;
   recipients: string;
 }
-
-const customerOptions = [
-  { label: "ASIAN HONDA MOTOR CO.,LTD.", value: "ASIAN HONDA" },
-  { label: "ALLIANCE LAUNDRY", value: "ALLIANCE LAUNDRY" },
-];
-
-const statusOptions = [
-  { label: "Pending", value: "Pending" },
-  { label: "Notified", value: "Notified" },
-];
 
 const Notification: React.FC = () => {
   const { setPageHeader } = usePageHeader();
@@ -44,7 +35,7 @@ const Notification: React.FC = () => {
 
   useEffect(() => {
     // Set default status if needed, or leave generic
-    const defaultStatus = statusOptions.find((opt) => opt.value === "Pending");
+    const defaultStatus = { label: "Pending", value: "Pending" };
     if (defaultStatus) {
       setSelectedStatus(defaultStatus);
     }
@@ -236,89 +227,19 @@ const Notification: React.FC = () => {
   return (
     <div className="px-6 py-2">
       {/* Search Filters */}
-      <div className="bg-white px-4 py-2 rounded-xl shadow-sm border border-gray-200 mb-4">
-        <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-2">
-          {/* 1. From Date */}
-          <div className="grid grid-cols-2 gap-2">
-            <div className="w-full">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                From PO Date
-              </label>
-              <DatePicker
-                name="fromDate"
-                placeholder="dd/mm/yyyy"
-                value={fromDate}
-                onChange={(val) => setFromDate(String(val || ""))}
-              />
-            </div>
-
-            {/* 2. To Date */}
-            <div className="w-full">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                To PO Date
-              </label>
-              <DatePicker
-                name="toDate"
-                placeholder="dd/mm/yyyy"
-                value={toDate}
-                onChange={(val) => setToDate(String(val || ""))}
-              />
-            </div>
-          </div>
-
-          {/* 3. Customer */}
-          <div className="w-full">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Customer
-            </label>
-            <AutoComplete
-              name="customer"
-              list={customerOptions}
-              value={selectedCustomer?.value}
-              onSelectItem={(item) => setSelectedCustomer(item)}
-              placeholder="Select Customer"
-            />
-          </div>
-
-          {/* 4. Status */}
-          <div className="w-full">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Status
-            </label>
-            <AutoComplete
-              name="status"
-              list={statusOptions}
-              value={selectedStatus?.value}
-              onSelectItem={(item) => setSelectedStatus(item)}
-              placeholder="Select Status"
-            />
-          </div>
-          <div className="flex flex-col">
-            <label className="invisible block text-xs font-medium text-gray-500 mb-1">
-              Action
-            </label>
-            <div className="flex flex-row gap-2">
-              <Button
-                variant="primary"
-                onClick={handleSearch}
-                className="flex-1 justify-center"
-                leftIcon={<BiSearch size={18} />}
-              >
-                Search
-              </Button>
-              {selectedRows.length > 0 && (
-                <Button
-                  variant="secondary"
-                  className="flex-1 justify-center"
-                  leftIcon={<BiMailSend size={18} />}
-                >
-                  Send Email
-                </Button>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
+      <NotificationSearch
+        fromDate={fromDate}
+        setFromDate={setFromDate}
+        toDate={toDate}
+        setToDate={setToDate}
+        selectedCustomer={selectedCustomer}
+        setSelectedCustomer={setSelectedCustomer}
+        selectedStatus={selectedStatus}
+        setSelectedStatus={setSelectedStatus}
+        onSearch={handleSearch}
+        onSendEmail={() => {}} // Placeholder as original code didn't have handler logic inline
+        hasSelectedRows={selectedRows.length > 0}
+      />
 
       {/* Table */}
       <DataTable

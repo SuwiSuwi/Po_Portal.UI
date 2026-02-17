@@ -45,38 +45,52 @@ const PoTable: React.FC<PoTableProps> = ({ data, columns, pagination }) => {
       {/* Table Container */}
       <div className="flex-1 overflow-auto border border-gray-200 rounded-xl shadow-sm">
         <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-bg-main sticky top-0 z-10 shadow-sm ">
+          <thead className="bg-slate-800 sticky top-0 z-10 shadow-sm">
             {/* First Header Row */}
             <tr>
-              {columns.map((col, index) => (
-                <th
-                  key={index}
-                  scope="col"
-                  rowSpan={col.columns ? 1 : hasGroupedHeaders ? 2 : 1}
-                  colSpan={col.columns ? col.columns.length : 1}
-                  className={`px-6 py-3 text-left text-xs font-bold text-primary uppercase tracking-wider bg-main border-r border-gray-200 last:border-r-0 ${
-                    col.className || ""
-                  }`}
-                >
-                  {col.header}
-                </th>
-              ))}
+              {columns.map((col, index) => {
+                const alignClass = col.className?.match(
+                  /text-(left|center|right|justify)/,
+                )
+                  ? ""
+                  : "text-left";
+                return (
+                  <th
+                    key={index}
+                    scope="col"
+                    rowSpan={col.columns ? 1 : hasGroupedHeaders ? 2 : 1}
+                    colSpan={col.columns ? col.columns.length : 1}
+                    className={`px-6 py-3 text-xs font-bold text-white uppercase tracking-wider bg-slate-800 border-r border-slate-700 last:border-r-0 ${alignClass} ${
+                      col.className || ""
+                    }`}
+                  >
+                    {col.header}
+                  </th>
+                );
+              })}
             </tr>
             {/* Second Header Row (only if grouped headers exist) */}
             {hasGroupedHeaders && (
               <tr>
                 {columns.map((col) =>
                   col.columns
-                    ? col.columns.map((subCol, subIndex) => (
-                        <th
-                          key={`${col.header}-${subIndex}`}
-                          className={`px-6 py-3 text-left text-xs font-bold text-primary uppercase tracking-wider bg-main border-r border-gray-200 last:border-r-0 ${
-                            subCol.className || ""
-                          }`}
-                        >
-                          {subCol.header}
-                        </th>
-                      ))
+                    ? col.columns.map((subCol, subIndex) => {
+                        const subAlignClass = subCol.className?.match(
+                          /text-(left|center|right|justify)/,
+                        )
+                          ? ""
+                          : "text-left";
+                        return (
+                          <th
+                            key={`${col.header}-${subIndex}`}
+                            className={`px-6 py-3 text-xs font-bold text-white uppercase tracking-wider bg-slate-800 border-r border-slate-700 last:border-r-0 ${subAlignClass} ${
+                              subCol.className || ""
+                            }`}
+                          >
+                            {subCol.header}
+                          </th>
+                        );
+                      })
                     : null,
                 )}
               </tr>
@@ -92,7 +106,7 @@ const PoTable: React.FC<PoTableProps> = ({ data, columns, pagination }) => {
                   {leafColumns.map((col, colIndex) => (
                     <td
                       key={colIndex}
-                      className={`px-6 py-4 whitespace-nowrap text-sm border-r border-gray-100 last:border-r-0 ${
+                      className={`px-6 py-4 whitespace-nowrap text-sm border-r border-gray-200 last:border-r-0 ${
                         col.className || "text-gray-900"
                       }`}
                     >

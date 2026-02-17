@@ -73,6 +73,7 @@ const Recipient: React.FC = () => {
       cell: ({ getValue }: any) => (
         <div className="text-center">{getValue()}</div>
       ),
+      size: 180,
     },
     {
       header: "Name",

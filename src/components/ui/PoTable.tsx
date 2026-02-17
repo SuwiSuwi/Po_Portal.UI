@@ -45,7 +45,7 @@ const PoTable: React.FC<PoTableProps> = ({ data, columns, pagination }) => {
       {/* Table Container */}
       <div className="flex-1 overflow-auto border border-gray-200 rounded-xl shadow-sm">
         <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-main sticky top-0 z-10 shadow-sm">
+          <thead className="bg-bg-main sticky top-0 z-10 shadow-sm ">
             {/* First Header Row */}
             <tr>
               {columns.map((col, index) => (

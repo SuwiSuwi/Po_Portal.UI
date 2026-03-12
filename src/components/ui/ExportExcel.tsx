@@ -1,4 +1,5 @@
 import ExcelJS from "exceljs";
+import { Alert } from "ponyo-ui";
 
 interface HeaderCell {
   value: string;
@@ -22,7 +23,11 @@ export const exportToExcel = async ({
   merges,
 }: ExportExcelProps) => {
   if (!data || data.length === 0) {
-    alert("No data to export");
+    Alert.default({
+      title: "คำเตือน",
+      text: "ไม่มีข้อมูลสำหรับส่งออก",
+      icon: "warning",
+    });
     return;
   }
 

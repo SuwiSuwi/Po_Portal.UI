@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { usePageHeader } from "../../../app/context/PageHeaderContext";
 import { BiHome, BiPlus, BiEdit, BiTrash, BiCheckCircle } from "react-icons/bi";
-import { DataTable } from "ponyo-ui";
+import { DataTable, Alert } from "ponyo-ui";
 import StatusModal from "./StatusModal";
 
 interface StatusData {
@@ -46,9 +46,15 @@ const Status: React.FC = () => {
   };
 
   const handleDelete = (item: StatusData) => {
-    if (confirm(`Are you sure you want to delete ${item.name}?`)) {
-      setData((prev) => prev.filter((i) => i.id !== item.id));
-    }
+    Alert.confirm({
+      title: "ยืนยันการลบ",
+      text: `คุณแน่ใจหรือไม่ว่าต้องการลบ ${item.name}?`,
+    }).then((confirmed) => {
+      if (confirmed) {
+        setData((prev) => prev.filter((i) => i.id !== item.id));
+        Alert.success("สำเร็จ", "ลบข้อมูลสำเร็จ");
+      }
+    });
   };
 
   const handleSave = (formData: any) => {
@@ -59,6 +65,7 @@ const Status: React.FC = () => {
           item.id === editingItem.id ? { ...item, ...formData } : item,
         ),
       );
+      Alert.success("สำเร็จ", "แก้ไขข้อมูลสำเร็จ");
     } else {
       // Add new
       const newId = (data.length + 1).toString();
@@ -67,6 +74,7 @@ const Status: React.FC = () => {
         ...formData,
       };
       setData((prev) => [...prev, newItem]);
+      Alert.success("สำเร็จ", "เพิ่มข้อมูลสำเร็จ");
     }
   };
 

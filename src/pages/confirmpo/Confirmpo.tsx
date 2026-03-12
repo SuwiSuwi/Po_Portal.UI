@@ -7,6 +7,7 @@ import ConfirmpoEdit from "./ConfirmpoEdit";
 import ConfirmpoDetail from "./ConfirmpoDetail";
 import { exportToExcel } from "../../components/ui/ExportExcel";
 import PoTable, { type PoTableColumn } from "../../components/ui/PoTable";
+import { Alert } from "ponyo-ui";
 
 interface ConfirmPoData {
   id: string;
@@ -87,6 +88,7 @@ const Confirmpo: React.FC = () => {
       prev.map((item) => (item.id === updatedPo.id ? updatedPo : item)),
     );
     setIsEditModalOpen(false);
+    Alert.success("สำเร็จ", "แก้ไขข้อมูลสำเร็จ");
   };
 
   const handleExport = () => {

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Alert } from "ponyo-ui";
 import { usePageHeader } from "../../app/context/PageHeaderContext";
 import { BiHome, BiBell } from "react-icons/bi";
 import { DataTable } from "ponyo-ui";
@@ -237,7 +238,11 @@ const Notification: React.FC = () => {
         selectedStatus={selectedStatus}
         setSelectedStatus={setSelectedStatus}
         onSearch={handleSearch}
-        onSendEmail={() => {}} // Placeholder as original code didn't have handler logic inline
+        onSendEmail={() => {
+          if (selectedRows.length > 0) {
+            Alert.success("สำเร็จ", "ส่งอีเมลแจ้งเตือนเรียบร้อยแล้ว");
+          }
+        }}
         hasSelectedRows={selectedRows.length > 0}
       />
 

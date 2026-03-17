@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { Sidebar } from "../../pages/common/layout/Sidebar";
 import { Breadcrumbs, Label } from "ponyo-ui";
 import { Navbar } from "../../pages/common/layout/Navbar";
@@ -11,8 +11,7 @@ import { menuSections } from "../../config/menu";
 
 const DefaultLayout: React.FC = () => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-  const location = useLocation();
-  const showSidebar = location.pathname !== "/";
+  const showSidebar = true; // Show sidebar on all pages within DefaultLayout
 
   const user = {
     id: "16011002",
